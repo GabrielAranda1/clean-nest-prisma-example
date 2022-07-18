@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { PersonService } from '../../../useCases/person/person.service';
-import { CreatePersonDto } from '../../../useCases/person/dto/create-person.dto';
-import { UpdatePersonDto } from '../../../useCases/person/dto/update-person.dto';
+import { CreatePersonDto } from '../../../useCases/person/dto/CreatePersonDTO';
+import { UpdatePersonDto } from '../../../useCases/person/dto/UpdatePersonDTO';
 
 @Controller('person')
 export class PersonController {
