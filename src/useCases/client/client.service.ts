@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
+import { BulkUpdateClientDto } from './dto/BulkUpdateClientDTO';
 import { CreateClientDto } from './dto/CreateClientDTO';
 import { UpdateClientDto } from './dto/UpdateClientDTO';
 
@@ -44,6 +45,24 @@ export class ClientService {
     if (!update) throw new Error('Client not found')
     
     return update
+  }
+  
+  async bulkUpdate(bulkUpdateClientDto: BulkUpdateClientDto) {
+    await this.prisma.clients.updateMany({
+      where: {
+        id: {
+          in: bulkUpdateClientDto.ids
+        }
+      }, 
+      data: { 
+        clientTypeId: bulkUpdateClientDto.clientTypeId,
+        updatedBy: bulkUpdateClientDto.updatedBy,
+        name: bulkUpdateClientDto.name,
+        updatedAt: new Date()
+      }
+    })
+        
+    return this.prisma.clients.findMany({where: {id: {in: bulkUpdateClientDto.ids}}})
   }
 
   async remove(id: number) {

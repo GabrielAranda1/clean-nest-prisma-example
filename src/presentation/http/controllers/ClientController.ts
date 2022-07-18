@@ -1,5 +1,6 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Put } from '@nestjs/common';
 import { ClientService } from 'src/useCases/client/client.service';
+import { BulkUpdateClientDto } from 'src/useCases/client/dto/BulkUpdateClientDTO';
 import { CreateClientDto } from '../../../useCases/client/dto/CreateClientDTO';
 import { UpdateClientDto } from '../../../useCases/client/dto/UpdateClientDTO';
 
@@ -25,6 +26,11 @@ export class ClientController {
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateClientDto: UpdateClientDto) {
     return this.clientService.update(+id, updateClientDto);
+  }
+  
+  @Put('')
+  bulkUpdate(@Body() bulkUpdateClientDto: BulkUpdateClientDto) {
+    return this.clientService.bulkUpdate(bulkUpdateClientDto);
   }
 
   @Delete(':id')
