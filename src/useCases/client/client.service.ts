@@ -5,7 +5,7 @@ import { UpdateClientDto } from './dto/update-client.dto';
 
 @Injectable()
 export class ClientService {
-  prisma: PrismaClient
+  private prisma: PrismaClient
   
   constructor() {
     this.prisma = new PrismaClient()
@@ -24,19 +24,33 @@ export class ClientService {
     if (created) return created
   }
 
-  findAll() {
-    return `This action returns all client`;
+  async findAll() {
+    const clients = await this.prisma.clients.findMany()
+    
+    return clients
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} client`;
+  async findOne(id: number) {
+    const client = await this.prisma.clients.findUnique({where: {id}})
+    
+    if (!client) throw new Error('Client not found')
+    
+    return client
   }
 
-  update(id: number, updateClientDto: UpdateClientDto) {
-    return `This action updates a #${id} client`;
+  async update(id: number, updateClientDto: UpdateClientDto) {
+    const update = await this.prisma.clients.update({where: {id}, data: {...updateClientDto, updatedAt: new Date()}})
+    
+    if (!update) throw new Error('Client not found')
+    
+    return update
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} client`;
+  async remove(id: number) {
+    const deleted = await this.prisma.clients.deleteMany({where: {id}})
+    
+    if(deleted.count > 0) return true
+    
+    throw new Error('Client not found')
   }
 }

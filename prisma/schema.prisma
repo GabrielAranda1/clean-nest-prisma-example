@@ -18,8 +18,8 @@ model People {
   createdBy String
   updatedAt DateTime
   updatedBy String
-  clientId Int
-  client Clients @relation(fields: [clientId], references: [id])
+  clientId Int?
+  client Clients? @relation(fields: [clientId], references: [id])
 }
 
 model Clients {
@@ -41,6 +41,6 @@ model Locals {
   createdBy String
   updatedAt DateTime
   updatedBy String
-  clientId Int
-  client Clients @relation(fields: [clientId], references: [id])
+  clientId Int?
+  client Clients? @relation(fields: [clientId], references: [id])
 }
