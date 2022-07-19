@@ -6,4 +6,4 @@ import { PersonController } from '../../presentation/http/controllers/PersonCont
   controllers: [PersonController],
   providers: [PersonService]
 })
-export class PersonModule {}
+export class PersonModule { }

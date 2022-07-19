@@ -6,4 +6,4 @@ import { LocalController } from '../../presentation/http/controllers/LocalContro
   controllers: [LocalController],
   providers: [LocalService]
 })
-export class LocalModule {}
+export class LocalModule { }

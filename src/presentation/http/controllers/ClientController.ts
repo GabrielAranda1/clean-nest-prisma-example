@@ -6,7 +6,7 @@ import { UpdateClientDto } from '../../../useCases/client/dto/UpdateClientDTO';
 
 @Controller('client')
 export class ClientController {
-  constructor(private readonly clientService: ClientService) {}
+  constructor(private readonly clientService: ClientService) { }
 
   @Post()
   create(@Body() createClientDto: CreateClientDto) {
@@ -27,7 +27,7 @@ export class ClientController {
   update(@Param('id') id: string, @Body() updateClientDto: UpdateClientDto) {
     return this.clientService.update(+id, updateClientDto);
   }
-  
+
   @Put('')
   bulkUpdate(@Body() bulkUpdateClientDto: BulkUpdateClientDto) {
     return this.clientService.bulkUpdate(bulkUpdateClientDto);

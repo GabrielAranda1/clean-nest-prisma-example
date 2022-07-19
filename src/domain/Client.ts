@@ -6,4 +6,4 @@ export class Person {
   createdBy: string
   updatedAt: Date
   updatedBy: string
-  }
+}

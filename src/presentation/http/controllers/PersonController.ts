@@ -6,7 +6,7 @@ import { BulkUpdatePersonDto } from 'src/useCases/person/dto/BulkUpdatePersonDTO
 
 @Controller('person')
 export class PersonController {
-  constructor(private readonly personService: PersonService) {}
+  constructor(private readonly personService: PersonService) { }
 
   @Post()
   create(@Body() createPersonDto: CreatePersonDto) {
@@ -32,7 +32,7 @@ export class PersonController {
   bulkUpdate(@Body() bulkUpdatePersonDto: BulkUpdatePersonDto) {
     return this.personService.bulkUpdate(bulkUpdatePersonDto);
   }
-  
+
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.personService.remove(+id);

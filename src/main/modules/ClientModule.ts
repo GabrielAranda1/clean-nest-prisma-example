@@ -6,4 +6,4 @@ import { ClientController } from '../../presentation/http/controllers/ClientCont
   controllers: [ClientController],
   providers: [ClientService]
 })
-export class ClientModule {}
+export class ClientModule { }

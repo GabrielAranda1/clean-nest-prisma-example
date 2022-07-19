@@ -6,7 +6,7 @@ import { BulkUpdateLocalDto } from 'src/useCases/local/dto/BulkUpdateLocalDTO';
 
 @Controller('local')
 export class LocalController {
-  constructor(private readonly localService: LocalService) {}
+  constructor(private readonly localService: LocalService) { }
 
   @Post()
   create(@Body() createLocalDto: CreateLocalDto) {
@@ -26,7 +26,7 @@ export class LocalController {
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateLocalDto: UpdateLocalDto) {
     return this.localService.update(+id, updateLocalDto);
-  
+
   }
   @Put('')
   bulkUpdate(@Body() bulkUpdateLocalDto: BulkUpdateLocalDto) {
