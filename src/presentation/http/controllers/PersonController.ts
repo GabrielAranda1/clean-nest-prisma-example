@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Put } from '@nestjs/common';
 import { PersonService } from '../../../useCases/person/person.service';
 import { CreatePersonDto } from '../../../useCases/person/dto/CreatePersonDTO';
 import { UpdatePersonDto } from '../../../useCases/person/dto/UpdatePersonDTO';
+import { BulkUpdatePersonDto } from 'src/useCases/person/dto/BulkUpdatePersonDTO';
 
 @Controller('person')
 export class PersonController {
@@ -27,6 +28,11 @@ export class PersonController {
     return this.personService.update(+id, updatePersonDto);
   }
 
+  @Put('')
+  bulkUpdate(@Body() bulkUpdatePersonDto: BulkUpdatePersonDto) {
+    return this.personService.bulkUpdate(bulkUpdatePersonDto);
+  }
+  
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.personService.remove(+id);

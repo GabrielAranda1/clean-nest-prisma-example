@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
+import { BulkUpdatePersonDto } from './dto/BulkUpdatePersonDTO';
 import { CreatePersonDto } from './dto/CreatePersonDTO';
 import { UpdatePersonDto } from './dto/UpdatePersonDTO';
 
@@ -25,19 +26,51 @@ export class PersonService {
     if (created) return created
   }
 
-  findAll() {
-    return `This action returns all person`;
+  async findAll() {
+    const people = await this.prisma.people.findMany()
+    
+    return people
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} person`;
+  async findOne(id: number) {
+    const people = await this.prisma.people.findUnique({where: {id}})
+    
+    if (!people) throw new Error('Person not found')
+    
+    return people
   }
 
-  update(id: number, updatePersonDto: UpdatePersonDto) {
-    return `This action updates a #${id} person`;
+  async update(id: number, updatePersonDto: UpdatePersonDto) {
+    const update = await this.prisma.people.update({where: {id}, data: {...updatePersonDto, updatedAt: new Date()}})
+    
+    if (!update) throw new Error('Person not found')
+    
+    return update
+  }
+  
+  async bulkUpdate(bulkUpdatePersonDto: BulkUpdatePersonDto) {
+    await this.prisma.people.updateMany({
+      where: {
+        id: {
+          in: bulkUpdatePersonDto.ids
+        }
+      }, 
+      data: { 
+        documentNumber: bulkUpdatePersonDto.documentNumber,
+        updatedBy: bulkUpdatePersonDto.updatedBy,
+        name: bulkUpdatePersonDto.name,
+        updatedAt: new Date()
+      }
+    })
+        
+    return this.prisma.people.findMany({where: {id: {in: bulkUpdatePersonDto.ids}}})
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} person`;
+  async remove(id: number) {
+    const deleted = await this.prisma.people.deleteMany({where: {id}})
+    
+    if(deleted.count > 0) return true
+    
+    throw new Error('Person not found')
   }
 }
