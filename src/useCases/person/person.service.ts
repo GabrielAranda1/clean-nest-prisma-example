@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
+import { redisClient } from 'src/infra/redis/RedisClient';
 import { BulkUpdatePersonDto } from './dto/BulkUpdatePersonDTO';
 import { CreatePersonDto } from './dto/CreatePersonDTO';
 import { UpdatePersonDto } from './dto/UpdatePersonDTO';
@@ -25,11 +26,21 @@ export class PersonService {
       }
     })
 
+    await redisClient.setRedis('people', undefined)
+
     if (created) return created
   }
 
   async findAll() {
+    const cachedPeople = await redisClient.getRedis('people');
+
+    if (cachedPeople) {
+      return JSON.parse(cachedPeople);
+    }
+
     const people = await this.prisma.people.findMany()
+
+    if (people) await redisClient.setRedis('people', JSON.stringify(people));
 
     return people
   }
@@ -39,6 +50,7 @@ export class PersonService {
 
     if (!people) throw new Error('Person not found')
 
+
     return people
   }
 
@@ -46,6 +58,8 @@ export class PersonService {
     const update = await this.prisma.people.update({ where: { id }, data: { ...updatePersonDto, updatedAt: new Date() } })
 
     if (!update) throw new Error('Person not found')
+
+    await redisClient.setRedis('people', undefined)
 
     return update
   }
@@ -65,6 +79,8 @@ export class PersonService {
       }
     })
 
+    await redisClient.setRedis('people', undefined)
+
     return this.prisma.people.findMany({ where: { id: { in: bulkUpdatePersonDto.ids } } })
   }
 
@@ -72,6 +88,8 @@ export class PersonService {
     const deleted = await this.prisma.people.deleteMany({ where: { id } })
 
     if (deleted.count > 0) return true
+
+    await redisClient.setRedis('people', undefined)
 
     throw new Error('Person not found')
   }
