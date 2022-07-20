@@ -42,6 +42,12 @@ export class ClientService {
   async findAll() {
     const clients = await this.prisma.clients.findMany()
 
+    return clients
+  }
+
+  async selectClients() {
+    const clients = await this.prisma.clients.findMany()
+
     return clients.map((client) => ({ id: client.id, name: client.name }))
   }
 

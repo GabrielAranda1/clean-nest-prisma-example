@@ -18,6 +18,11 @@ export class ClientController {
     return this.clientService.findAll();
   }
 
+  @Get('/selected')
+  selectClients() {
+    return this.clientService.selectClients();
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.clientService.findOne(+id);
