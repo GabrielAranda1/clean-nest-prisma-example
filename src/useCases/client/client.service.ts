@@ -20,7 +20,19 @@ export class ClientService {
         createdBy: createClientDto.createdBy,
         updatedBy: createClientDto.createdBy,
         createdAt: new Date(),
-        updatedAt: new Date()
+        updatedAt: new Date(),
+        people: {
+          create: createClientDto.people.map((person) => {
+            return ({
+              createdAt: new Date(),
+              updatedAt: new Date(),
+              createdBy: createClientDto.createdBy,
+              updatedBy: createClientDto.createdBy,
+              documentNumber: person.documentNumber,
+              name: person.name
+            })
+          })
+        }
       }
     })
 
@@ -30,7 +42,7 @@ export class ClientService {
   async findAll() {
     const clients = await this.prisma.clients.findMany()
 
-    return clients
+    return clients.map((client) => ({ id: client.id, name: client.name }))
   }
 
   async findOne(id: number) {
