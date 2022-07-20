@@ -10,3 +10,4 @@ Date: 20/07/2022
 - [ ] Add eventual consistence to all CRUD operations using kafka
 - [ ] Add jwt authentication
 - [ ] Add role basic access control (RBAC)
+- [ ] Add singleton Redis connector
